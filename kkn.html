@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KKN - TI UMY</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;
+      font-family:"Segoe UI",Arial,sans-serif;
+      color:#263225;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background:
+        linear-gradient(rgba(230,238,246,.18), rgba(190,203,195,.28)),
+        url("assets/bg-umy.jpg") center center / cover no-repeat fixed;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:rgba(245,248,252,.10);
+      backdrop-filter:blur(5px);
+      -webkit-backdrop-filter:blur(5px);
+      pointer-events:none;
+    }
+    .card{
+      position:relative;
+      z-index:1;
+      width:min(92vw,440px);
+      padding:34px 22px 24px;
+      border-radius:34px;
+      background:rgba(255,255,255,.18);
+      border:1.5px solid rgba(255,255,255,.38);
+      box-shadow:0 22px 60px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.24);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      text-align:center;
+    }
+    .icon{font-size:52px;margin-bottom:14px}
+    h1{font-size:34px;line-height:1.1;margin-bottom:10px;color:#1f2b1e}
+    p{font-size:16px;line-height:1.7;color:#334334;margin-bottom:18px}
+    a{display:inline-flex;align-items:center;justify-content:center;width:100%;min-height:52px;border-radius:999px;text-decoration:none;font-weight:900;color:#253000;background:linear-gradient(135deg,#c9f35e,#e7ff85);}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="icon">👥</div>
+    <h1>KKN</h1>
+    <p>Halaman KKN dapat diisi nanti sesuai kebutuhan. Struktur file sudah disiapkan agar mudah dikembangkan.</p>
+    <a href="index.html">← Kembali ke Beranda</a>
+  </main>
+</body>
+</html>
