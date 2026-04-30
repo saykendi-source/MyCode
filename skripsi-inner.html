@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulir Pengajuan Tugas Akhir</title>
+  <style>
+    :root {
+      --lime: #d8ff5a;
+      --lime-dark: #b7ef22;
+      --ink: #17231b;
+      --soft-ink: rgba(23, 35, 27, 0.78);
+      --glass: rgba(238, 246, 239, 0.42);
+      --glass-strong: rgba(255, 255, 255, 0.35);
+      --glass-border: rgba(255, 255, 255, 0.52);
+      --field: rgba(255, 255, 255, 0.52);
+      --danger: #9f1239;
+      --success: #166534;
+      --info: #1e3a8a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, rgba(227, 234, 226, 0.82), rgba(165, 183, 150, 0.7)),
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,0.95), transparent 28%),
+        radial-gradient(circle at 90% 85%, rgba(139, 171, 89, 0.85), transparent 32%),
+        linear-gradient(145deg, #dfe9e3, #93a97e 60%, #6b864b);
+      padding: 18px;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -28px;
+      z-index: -2;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.18) 0 1px, transparent 1px 72px),
+        linear-gradient(0deg, rgba(255,255,255,0.12) 0 1px, transparent 1px 68px),
+        radial-gradient(circle at 10% 18%, rgba(255,255,255,0.5), transparent 18%),
+        radial-gradient(circle at 80% 15%, rgba(173, 211, 113, 0.45), transparent 28%),
+        radial-gradient(circle at 20% 88%, rgba(255,255,255,0.42), transparent 28%);
+      filter: blur(14px);
+      opacity: 0.88;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(2px);
+    }
+
+    .page {
+      width: min(100%, 430px);
+      margin: 0 auto;
+    }
+
+    .phone-frame {
+      position: relative;
+      min-height: calc(100vh - 36px);
+      padding: 30px 24px;
+      border-radius: 48px;
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,0.55);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.22),
+        0 28px 80px rgba(25, 37, 25, 0.28);
+      backdrop-filter: blur(22px);
+      overflow: hidden;
+    }
+
+    .phone-frame::before,
+    .phone-frame::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      border-radius: 42px;
+      border: 1px solid rgba(255,255,255,0.48);
+      inset: 14px;
+    }
+
+    .phone-frame::after {
+      inset: 30px 22px;
+      border-color: rgba(255,255,255,0.42);
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 34px 4px 24px;
+    }
+
+    .hero-icon {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 32px;
+      background: rgba(255,255,255,0.34);
+      border: 1px solid rgba(255,255,255,0.66);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.42),
+        0 20px 45px rgba(31, 41, 55, 0.10);
+      font-size: 44px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.05;
+      letter-spacing: -0.06em;
+      color: var(--ink);
+      text-shadow: 0 3px 10px rgba(255,255,255,0.55);
+    }
+
+    .subtitle {
+      margin: 16px auto 0;
+      max-width: 330px;
+      color: var(--soft-ink);
+      font-size: 16px;
+      line-height: 1.62;
+    }
+
+    .panel {
+      margin-top: 18px;
+      padding: 20px;
+      border-radius: 26px;
+      background: rgba(255,255,255,0.24);
+      border: 1px solid var(--glass-border);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.28),
+        0 22px 60px rgba(24, 35, 27, 0.12);
+    }
+
+    .panel + .panel {
+      margin-top: 16px;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .panel-title h2 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(216, 255, 90, 0.46);
+      border: 1px solid rgba(216, 255, 90, 0.75);
+      color: #25330f;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .field {
+      margin-top: 13px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 800;
+      color: rgba(23, 35, 27, 0.9);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.62);
+      border-radius: 18px;
+      padding: 13px 15px;
+      font-size: 15px;
+      line-height: 1.45;
+      color: var(--ink);
+      outline: none;
+      background: var(--field);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.42);
+      backdrop-filter: blur(14px);
+      transition: box-shadow .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    textarea {
+      min-height: 112px;
+      resize: vertical;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(23, 35, 27, 0.46);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(216, 255, 90, 0.95);
+      background: rgba(255,255,255,0.66);
+      box-shadow:
+        0 0 0 4px rgba(216, 255, 90, 0.24),
+        inset 0 1px 0 rgba(255,255,255,0.56);
+    }
+
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, rgba(23,35,27,.85) 50%), linear-gradient(135deg, rgba(23,35,27,.85) 50%, transparent 50%);
+      background-position: calc(100% - 22px) 50%, calc(100% - 16px) 50%;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      padding-right: 44px;
+    }
+
+    select:invalid {
+      color: rgba(23, 35, 27, 0.46);
+    }
+
+    select option {
+      color: #17231b;
+      background: #ffffff;
+    }
+
+    input[readonly] {
+      background: rgba(255,255,255,0.27);
+      color: rgba(23, 35, 27, 0.72);
+      cursor: not-allowed;
+    }
+
+    .hint {
+      display: block;
+      margin-top: 6px;
+      color: rgba(23, 35, 27, 0.58);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    button,
+    .home-link {
+      width: 100%;
+      min-height: 54px;
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+    }
+
+    button[type="submit"] {
+      color: #203000;
+      background: linear-gradient(135deg, var(--lime), #eaff7b);
+      box-shadow: 0 16px 35px rgba(178, 231, 37, 0.28);
+    }
+
+    button[type="reset"] {
+      color: var(--ink);
+      background: rgba(255,255,255,0.30);
+      border: 1px solid rgba(255,255,255,0.56);
+    }
+
+    button:hover,
+    .home-link:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 30px rgba(35, 46, 30, 0.14);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .62;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 18px;
+      color: #203000;
+      background: linear-gradient(135deg, var(--lime), #eaff7b);
+    }
+
+    .status {
+      display: none;
+      margin-top: 14px;
+      padding: 13px 14px;
+      border-radius: 18px;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.45;
+      background: rgba(255,255,255,0.35);
+      border: 1px solid rgba(255,255,255,0.62);
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    .status.info {
+      color: var(--info);
+    }
+
+    .status.success {
+      color: var(--success);
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    .footer-note {
+      margin: 16px auto 0;
+      text-align: center;
+      max-width: 320px;
+      color: rgba(23, 35, 27, 0.64);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 460px) {
+      body {
+        padding: 10px;
+      }
+
+      .phone-frame {
+        min-height: calc(100vh - 20px);
+        padding: 22px 18px;
+        border-radius: 44px;
+      }
+
+      .hero {
+        padding-top: 30px;
+      }
+
+      .hero-icon {
+        width: 90px;
+        height: 90px;
+        border-radius: 30px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .subtitle {
+        font-size: 15px;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+    }
+  </style>
+<style>
+
+          html,
+          body {
+            background: transparent !important;
+            background-image: none !important;
+            min-height: 100% !important;
+            width: 100% !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+            color: #263225 !important;
+          }
+
+          html::-webkit-scrollbar,
+          body::-webkit-scrollbar,
+          *::-webkit-scrollbar,
+          .page::-webkit-scrollbar,
+          .phone-frame::-webkit-scrollbar,
+          .content::-webkit-scrollbar,
+          form::-webkit-scrollbar,
+          .panel::-webkit-scrollbar {
+            width: 0 !important;
+            height: 0 !important;
+            display: none !important;
+            background: transparent !important;
+          }
+
+          *,
+          .page,
+          .phone-frame,
+          .content,
+          form,
+          .panel {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+          }
+
+          body {
+            display: block !important;
+            padding: 0 !important;
+            margin: 0 !important;
+          }
+
+          body::before,
+          body::after {
+            display: none !important;
+            content: none !important;
+            background: transparent !important;
+            opacity: 0 !important;
+          }
+
+          /*
+            Penyederhanaan lapisan:
+            - .detail-app dan .detail-content dari halaman utama sudah menjadi frame kaca.
+            - Frame internal .phone-frame dari file Skripsi lama dinetralkan agar tidak tampak berlapis.
+          */
+          .page,
+          main.page {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-height: auto !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            overflow: visible !important;
+          }
+
+          .phone-frame {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-height: auto !important;
+            height: auto !important;
+            max-height: none !important;
+            margin: 0 !important;
+            padding: 10px 10px 128px !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            overflow: visible !important;
+          }
+
+          .phone-frame::before,
+          .phone-frame::after {
+            display: none !important;
+            content: none !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            opacity: 0 !important;
+          }
+
+          .content {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            color: #263225 !important;
+          }
+
+          .hero {
+            padding: 12px 4px 18px !important;
+            text-align: center !important;
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+          }
+
+          .hero-icon {
+            width: 74px !important;
+            height: 74px !important;
+            border-radius: 23px !important;
+            font-size: 34px !important;
+            margin: 0 auto 15px !important;
+            background: rgba(255,255,255,.22) !important;
+            border: 1.3px solid rgba(255,255,255,.44) !important;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 8px 18px rgba(0,0,0,.06) !important;
+          }
+
+          h1,
+          h2,
+          h3,
+          label,
+          p,
+          .subtitle,
+          .footer-note,
+          .hint,
+          .panel-title h2,
+          .status,
+          input,
+          select,
+          textarea,
+          option {
+            color: #263225 !important;
+            text-shadow: 0 1px 6px rgba(255,255,255,.82) !important;
+          }
+
+          h1 {
+            font-size: clamp(2rem, 7.5vw, 2.35rem) !important;
+            line-height: 1.12 !important;
+            font-weight: 900 !important;
+            color: #1f2b1e !important;
+            text-shadow: 0 2px 8px rgba(255,255,255,.90), 0 1px 2px rgba(0,0,0,.10) !important;
+          }
+
+          .subtitle {
+            max-width: 330px !important;
+            font-size: 14px !important;
+            line-height: 1.55 !important;
+            margin: 12px auto 0 !important;
+          }
+
+          .panel {
+            margin-top: 14px !important;
+            padding: 18px !important;
+            border-radius: 24px !important;
+            background: rgba(255,255,255,.22) !important;
+            border: 1.3px solid rgba(255,255,255,.46) !important;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.24), 0 8px 18px rgba(0,0,0,.04) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+          }
+
+          .panel + .panel {
+            margin-top: 14px !important;
+          }
+
+          .panel-title {
+            margin-bottom: 12px !important;
+          }
+
+          .panel-title h2 {
+            font-size: 18px !important;
+            font-weight: 900 !important;
+          }
+
+          .field {
+            margin-top: 12px !important;
+          }
+
+          label {
+            font-size: 13px !important;
+            font-weight: 900 !important;
+          }
+
+          input,
+          select,
+          textarea {
+            min-height: 52px !important;
+            border-radius: 16px !important;
+            background: rgba(255,255,255,.46) !important;
+            border: 1.4px solid rgba(255,255,255,.60) !important;
+            font-size: 15px !important;
+            font-weight: 700 !important;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.34) !important;
+          }
+
+          textarea {
+            min-height: 105px !important;
+          }
+
+          input[readonly] {
+            background: rgba(255,255,255,.32) !important;
+          }
+
+          button,
+          .home-link {
+            min-height: 52px !important;
+            border-radius: 999px !important;
+            font-size: 15px !important;
+            font-weight: 900 !important;
+            color: #253000 !important;
+            text-shadow: none !important;
+          }
+
+          .home-link {
+            display: none !important;
+          }
+
+          .footer-note {
+            display: none !important;
+          }
+
+          .status.success { color: #166534 !important; }
+          .status.error { color: #9f1239 !important; }
+          .status.info { color: #1e3a8a !important; }
+
+          @media (max-width: 480px) {
+            .phone-frame {
+              padding: 8px 8px 128px !important;
+            }
+
+            .hero {
+              padding-top: 8px !important;
+            }
+
+            .hero-icon {
+              width: 70px !important;
+              height: 70px !important;
+              font-size: 32px !important;
+              margin-bottom: 13px !important;
+            }
+
+            h1 {
+              font-size: 2.08rem !important;
+            }
+
+            .panel {
+              padding: 16px !important;
+              border-radius: 22px !important;
+            }
+          }
+        
+</style>
+</head>
+<body>
+  <main class="page">
+    <section class="phone-frame">
+      <div class="content">
+        <header class="hero">
+          <div class="hero-icon" aria-hidden="true">📝</div>
+          <h1>Skripsi</h1>
+          <p class="subtitle">Halaman ini digunakan untuk membuat surat pengantar tugas akhir. Setelah mengisi, selanjutnya silahkan kontak mas haris untuk mencetak.</p>
+        </header>
+
+        <form id="taForm">
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Data Mahasiswa</h2>
+            </div>
+
+            <div class="field">
+              <label for="nim">NIM</label>
+              <input id="nim" name="nim" type="text" list="nimList" placeholder="Masukkan NIM" autocomplete="off" required />
+            </div>
+
+            <div class="field">
+              <label for="nama">Nama Mahasiswa</label>
+              <input id="nama" name="nama" type="text" placeholder="Otomatis dari NIM" readonly required />
+            </div>
+
+            <div class="field">
+              <label for="judulSkripsi">Judul Skripsi</label>
+              <textarea id="judulSkripsi" name="judulSkripsi" placeholder="Tuliskan judul skripsi/tugas akhir" required></textarea>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Dosen Pembimbing</h2>
+            </div>
+
+            <div class="field">
+              <label for="pembimbing1">Dosen Pembimbing 1</label>
+              <select id="pembimbing1" name="pembimbing1" required>
+                <option value="">Memuat data dosen...</option>
+              </select>
+            </div>
+
+            <input id="nidnPembimbing1" name="nidnPembimbing1" type="hidden" required />
+
+            <div class="field">
+              <label for="pembimbing2">Dosen Pembimbing 2</label>
+              <select id="pembimbing2" name="pembimbing2" required>
+                <option value="">Memuat data dosen...</option>
+              </select>
+            </div>
+
+            <input id="nidnPembimbing2" name="nidnPembimbing2" type="hidden" required />
+
+            <div class="field">
+              <label for="kaprodi">Mengetahui Kaprodi</label>
+              <select id="kaprodi" name="kaprodi" required>
+                <option value="">Memuat data dosen...</option>
+              </select>
+            </div>
+
+            <input id="nidnKaprodi" name="nidnKaprodi" type="hidden" required />
+
+            <datalist id="nimList"></datalist>
+
+            <div class="actions">
+              <button id="submitBtn" type="submit">Kirim Pengajuan</button>
+              <button type="reset">Bersihkan Form</button>
+            </div>
+
+            <div id="statusBox" class="status"></div>
+          </section>
+        </form>
+
+        <a class="home-link" href="../index.html">← Kembali ke Beranda</a>
+        <p class="footer-note">NIDN dosen pembimbing dan kaprodi disembunyikan pada tampilan, tetapi tetap ikut tersimpan saat pengajuan dikirim.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwEZGd0xgc6XAHfpk5flzf3wP5ZZESagPd_qdxrJekhz8aRSc2xi6oY5Jhrb3Xq0vZGgQ/exec";
+
+    const form = document.getElementById("taForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const statusBox = document.getElementById("statusBox");
+
+    const nimInput = document.getElementById("nim");
+    const namaInput = document.getElementById("nama");
+    const nimList = document.getElementById("nimList");
+    const judulSkripsiInput = document.getElementById("judulSkripsi");
+
+    const pembimbing1Input = document.getElementById("pembimbing1");
+    const nidnPembimbing1Input = document.getElementById("nidnPembimbing1");
+    const pembimbing2Input = document.getElementById("pembimbing2");
+    const nidnPembimbing2Input = document.getElementById("nidnPembimbing2");
+    const kaprodiInput = document.getElementById("kaprodi");
+    const nidnKaprodiInput = document.getElementById("nidnKaprodi");
+
+    let mahasiswaMap = new Map();
+    let dosenMap = new Map();
+    let allDosenItems = [];
+
+    function showStatus(message, type = "info") {
+      statusBox.textContent = message;
+      statusBox.className = `status show ${type}`;
+    }
+
+    function hideStatus() {
+      statusBox.textContent = "";
+      statusBox.className = "status";
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function normalizeText(value) {
+      return String(value || "").trim().replace(/\s+/g, " ");
+    }
+
+    function normalizeKey(value) {
+      return normalizeText(value).toLowerCase();
+    }
+
+    function isExampleData(value) {
+      const text = normalizeKey(value);
+      return /(^|\s)(contoh|sample|dummy|example)(\s|$)/i.test(text);
+    }
+
+    function setSelectLoading(selectElement, text = "Memuat data dosen...") {
+      selectElement.innerHTML = `<option value="">${escapeHtml(text)}</option>`;
+      selectElement.disabled = true;
+    }
+
+    function setAllDosenSelectsLoading() {
+      setSelectLoading(pembimbing1Input);
+      setSelectLoading(pembimbing2Input);
+      setSelectLoading(kaprodiInput);
+    }
+
+    function loadMasterData() {
+      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("PASTE_URL")) {
+        showStatus("URL Apps Script belum diisi pada file HTML.", "error");
+        setAllDosenSelectsLoading();
+        return;
+      }
+
+      showStatus("Memuat master data mahasiswa dan dosen...", "info");
+      setAllDosenSelectsLoading();
+
+      const callbackName = "handleMasterData";
+      const script = document.createElement("script");
+      script.src = `${APPS_SCRIPT_URL}?action=getMasterData&callback=${callbackName}&t=${Date.now()}`;
+      script.onerror = function () {
+        showStatus("Master data gagal dimuat. Periksa URL Apps Script dan izin deployment.", "error");
+      };
+      document.body.appendChild(script);
+    }
+
+    window.handleMasterData = function (payload) {
+      if (!payload || payload.status !== "success") {
+        showStatus(payload && payload.message ? payload.message : "Master data tidak valid.", "error");
+        return;
+      }
+
+      const mahasiswaItems = (payload.mahasiswa || [])
+        .map(item => ({
+          nim: normalizeText(item.nim),
+          nama: normalizeText(item.nama)
+        }))
+        .filter(item => item.nim && item.nama && !isExampleData(item.nim) && !isExampleData(item.nama));
+
+      const dosenItems = (payload.dosen || [])
+        .map(item => ({
+          nama: normalizeText(item.dosen || item.nama),
+          nidn: normalizeText(item.nidn)
+        }))
+        .filter(item => item.nama && item.nidn && !isExampleData(item.nama) && !isExampleData(item.nidn));
+
+      const dosenUnikMap = new Map();
+      dosenItems.forEach(item => {
+        const key = normalizeKey(item.nama);
+        if (!dosenUnikMap.has(key)) {
+          dosenUnikMap.set(key, item);
+        }
+      });
+
+      const dosenUnik = Array.from(dosenUnikMap.values())
+        .sort((a, b) => a.nama.localeCompare(b.nama, "id"));
+
+      mahasiswaMap = new Map(mahasiswaItems.map(item => [item.nim, item.nama]));
+      dosenMap = new Map(dosenUnik.map(item => [item.nama, item.nidn]));
+      allDosenItems = dosenUnik;
+
+      nimList.innerHTML = mahasiswaItems
+        .map(item => `<option value="${escapeHtml(item.nim)}">${escapeHtml(item.nama)}</option>`)
+        .join("");
+
+      renderDosenOptions();
+
+      if (allDosenItems.length === 0) {
+        showStatus("Daftar dosen valid belum tersedia. Hapus data contoh pada TA Master Data, lalu isi nama dosen dan NIDN asli.", "error");
+        submitBtn.disabled = true;
+        return;
+      }
+
+      submitBtn.disabled = false;
+      showStatus(`Master data berhasil dimuat: ${mahasiswaMap.size} mahasiswa dan ${dosenMap.size} dosen valid.`, "success");
+      setTimeout(hideStatus, 2200);
+    };
+
+    function updateNamaMahasiswa() {
+      const nim = normalizeText(nimInput.value);
+      namaInput.value = mahasiswaMap.get(nim) || "";
+    }
+
+    function updateNidn(dosenSelect, nidnInput) {
+      const namaDosen = normalizeText(dosenSelect.value);
+      nidnInput.value = dosenMap.get(namaDosen) || "";
+    }
+
+    function renderSelectOptions(selectElement, excludeName, placeholder) {
+      const oldValue = normalizeText(selectElement.value);
+      const excludeKey = normalizeKey(excludeName);
+      const availableItems = allDosenItems.filter(item => normalizeKey(item.nama) !== excludeKey);
+
+      const options = [`<option value="">${escapeHtml(placeholder)}</option>`]
+        .concat(availableItems.map(item => `<option value="${escapeHtml(item.nama)}">${escapeHtml(item.nama)}</option>`));
+
+      selectElement.innerHTML = options.join("");
+      selectElement.disabled = availableItems.length === 0;
+
+      const oldValueStillAvailable = availableItems.some(item => normalizeText(item.nama) === oldValue);
+      selectElement.value = oldValueStillAvailable ? oldValue : "";
+    }
+
+    function renderDosenOptions() {
+      const pembimbing1Terpilih = normalizeText(pembimbing1Input.value);
+      const pembimbing2Terpilih = normalizeText(pembimbing2Input.value);
+
+      renderSelectOptions(pembimbing1Input, pembimbing2Terpilih, "Pilih Dosen Pembimbing 1");
+      renderSelectOptions(pembimbing2Input, pembimbing1Terpilih, "Pilih Dosen Pembimbing 2");
+      renderSelectOptions(kaprodiInput, "", "Pilih Kaprodi");
+
+      updateNidn(pembimbing1Input, nidnPembimbing1Input);
+      updateNidn(pembimbing2Input, nidnPembimbing2Input);
+      updateNidn(kaprodiInput, nidnKaprodiInput);
+    }
+
+    nimInput.addEventListener("input", updateNamaMahasiswa);
+
+    pembimbing1Input.addEventListener("change", function () {
+      renderDosenOptions();
+    });
+
+    pembimbing2Input.addEventListener("change", function () {
+      renderDosenOptions();
+    });
+
+    kaprodiInput.addEventListener("change", function () {
+      updateNidn(kaprodiInput, nidnKaprodiInput);
+    });
+
+    form.addEventListener("reset", function () {
+      setTimeout(function () {
+        namaInput.value = "";
+        nidnPembimbing1Input.value = "";
+        nidnPembimbing2Input.value = "";
+        nidnKaprodiInput.value = "";
+        renderDosenOptions();
+        hideStatus();
+      }, 0);
+    });
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      updateNamaMahasiswa();
+      updateNidn(pembimbing1Input, nidnPembimbing1Input);
+      updateNidn(pembimbing2Input, nidnPembimbing2Input);
+      updateNidn(kaprodiInput, nidnKaprodiInput);
+
+      if (!namaInput.value.trim()) {
+        showStatus("NIM belum ditemukan pada TA Master Data.", "error");
+        nimInput.focus();
+        return;
+      }
+
+      if (!judulSkripsiInput.value.trim()) {
+        showStatus("Judul skripsi belum diisi.", "error");
+        judulSkripsiInput.focus();
+        return;
+      }
+
+      if (!pembimbing1Input.value || !nidnPembimbing1Input.value.trim()) {
+        showStatus("Pilih Dosen Pembimbing 1 dari daftar dosen yang tersedia.", "error");
+        pembimbing1Input.focus();
+        return;
+      }
+
+      if (!pembimbing2Input.value || !nidnPembimbing2Input.value.trim()) {
+        showStatus("Pilih Dosen Pembimbing 2 dari daftar dosen yang tersedia.", "error");
+        pembimbing2Input.focus();
+        return;
+      }
+
+      if (!kaprodiInput.value || !nidnKaprodiInput.value.trim()) {
+        showStatus("Pilih Kaprodi dari daftar dosen yang tersedia.", "error");
+        kaprodiInput.focus();
+        return;
+      }
+
+      if (normalizeKey(pembimbing1Input.value) === normalizeKey(pembimbing2Input.value)) {
+        showStatus("Dosen Pembimbing 1 dan Dosen Pembimbing 2 tidak boleh sama.", "error");
+        pembimbing2Input.focus();
+        return;
+      }
+
+      const data = new URLSearchParams();
+      data.append("nim", nimInput.value.trim());
+      data.append("nama", namaInput.value.trim());
+      data.append("judulSkripsi", judulSkripsiInput.value.trim());
+      data.append("pembimbing1", pembimbing1Input.value.trim());
+      data.append("nidnPembimbing1", nidnPembimbing1Input.value.trim());
+      data.append("pembimbing2", pembimbing2Input.value.trim());
+      data.append("nidnPembimbing2", nidnPembimbing2Input.value.trim());
+      data.append("kaprodi", kaprodiInput.value.trim());
+      data.append("nidnKaprodi", nidnKaprodiInput.value.trim());
+
+      submitBtn.disabled = true;
+      showStatus("Mengirim pengajuan tugas akhir...", "info");
+
+      fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        body: data,
+        mode: "no-cors"
+      })
+        .then(function () {
+          showStatus("Pengajuan berhasil dikirim. Silakan cek spreadsheet respons.", "success");
+          form.reset();
+        })
+        .catch(function () {
+          showStatus("Pengajuan gagal dikirim. Periksa koneksi internet dan URL Apps Script.", "error");
+        })
+        .finally(function () {
+          submitBtn.disabled = false;
+        });
+    });
+
+    loadMasterData();
+  </script>
+</body>
+</html>
