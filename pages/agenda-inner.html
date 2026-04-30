@@ -903,16 +903,6 @@
       <header class="app-header">
               <h1>Agenda Mahasiswa</h1>
         <p class="subtitle">Kalender agenda kegiatan mahasiswa Teknologi Informasi UMY.</p>
-        <div class="stats-strip">
-          <div class="stat-chip">
-            <span>Total agenda</span>
-            <strong id="agendaCount">0</strong>
-          </div>
-          <div class="stat-chip">
-            <span>Bulan aktif</span>
-            <strong id="activeMonthLabel">-</strong>
-          </div>
-        </div>
       </header>
 
       <div class="config-tip hidden" id="configTip">
@@ -960,7 +950,7 @@
       <section class="detail-panel">
         <div class="detail-header">
           <div>
-            <p class="eyebrow">Detail tanggal terpilih</p>
+            <p class="eyebrow" id="detailEyebrow">Detail tanggal terpilih</p>
             <h2 id="selectedDateTitle">-</h2>
             <p id="selectedDateMeta">Klik tanggal pada kalender untuk melihat agenda.</p>
           </div>
@@ -1057,6 +1047,7 @@
       calendarGrid: document.getElementById("calendarGrid"),
       monthTitle: document.getElementById("monthTitle"),
       calendarHint: document.getElementById("calendarHint"),
+      detailEyebrow: document.getElementById("detailEyebrow"),
       selectedDateTitle: document.getElementById("selectedDateTitle"),
       selectedDateMeta: document.getElementById("selectedDateMeta"),
       selectedCountBadge: document.getElementById("selectedCountBadge"),
@@ -1172,6 +1163,14 @@
       const yearMap = state.holidaysByYear.get(year);
       return yearMap ? yearMap.get(isoDate) : null;
     }
+
+
+    function getDetailAgendas() {
+      const keyword = state.searchTerm.trim().toLowerCase();
+      if (keyword) return [...state.filteredAgendas];
+      return getAgendasForDate(state.selectedDate);
+    }
+
 
     function normalizeSpreadsheetUrl(url) {
       const raw = String(url || "").trim();
@@ -1318,7 +1317,7 @@
       gridStart.setDate(monthStart.getDate() - firstDayIndex);
 
       elements.monthTitle.textContent = formatMonthYear(state.currentMonth);
-      elements.activeMonthLabel.textContent = formatMonthYear(state.currentMonth);
+      if (elements.activeMonthLabel) elements.activeMonthLabel.textContent = formatMonthYear(state.currentMonth);
 
       const monthAgendaCount = state.filteredAgendas.filter(item => {
         const date = parseISODate(item.date);
@@ -1373,12 +1372,93 @@
       elements.calendarGrid.innerHTML = fragments.join("");
     }
 
+
     function renderDetails() {
-      const agendas = getAgendasForDate(state.selectedDate);
+      const keyword = state.searchTerm.trim().toLowerCase();
+      const agendas = getDetailAgendas();
+
+      if (keyword) {
+        if (elements.detailEyebrow) elements.detailEyebrow.textContent = "Hasil pencarian";
+        elements.selectedDateTitle.textContent = `Pencarian: "${state.searchTerm.trim()}"`;
+        elements.selectedDateMeta.textContent = agendas.length
+          ? `Menampilkan ${agendas.length} agenda dari semua bulan yang cocok dengan kata kunci pencarian.`
+          : "Tidak ada agenda yang cocok di semua bulan.";
+        elements.selectedCountBadge.textContent = `${agendas.length} agenda`;
+        elements.holidayBanner.innerHTML = "";
+        elements.holidayBanner.classList.add("hidden");
+
+        if (!agendas.length) {
+          elements.agendaList.innerHTML = `
+            <div class="empty-state">
+              <strong>Tidak ada agenda yang cocok.</strong>
+              <p>Coba gunakan kata kunci lain. Pencarian akan membaca agenda di semua bulan.</p>
+            </div>
+          `;
+          return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        agendas.forEach(item => {
+          const node = elements.agendaCardTemplate.content.cloneNode(true);
+          node.querySelector(".agenda-category").textContent = item.category || "Agenda";
+          node.querySelector(".agenda-title").textContent = item.title;
+          node.querySelector(".agenda-status").textContent = item.status || "Terjadwal";
+          node.querySelector(".agenda-time").textContent = `${formatLongDate(item.date)} • ${buildTimeLabel(item)}`;
+          node.querySelector(".agenda-location").textContent = item.location || "Belum diatur";
+          node.querySelector(".agenda-organizer").textContent = item.organizer || "Belum diatur";
+          node.querySelector(".agenda-target").textContent = item.target || "Umum";
+          node.querySelector(".agenda-description").textContent = item.description || "Tidak ada deskripsi singkat.";
+          node.querySelector(".agenda-contact").textContent = `Kontak: ${item.contact || "Belum tersedia"}`;
+          node.querySelector(".agenda-source").textContent = `Sumber: ${item.source || "Belum tersedia"}`;
+
+          const tags = node.querySelector(".agenda-tags");
+          [
+            item.mode ? `Mode: ${item.mode}` : "",
+            item.cost ? `Biaya: ${item.cost}` : "",
+            item.deadline ? `Batas daftar: ${formatLongDate(item.deadline)}` : "",
+            item.benefit ? `Benefit: ${item.benefit}` : ""
+          ].filter(Boolean).forEach(text => {
+            const chip = document.createElement("span");
+            chip.className = "agenda-tag";
+            chip.textContent = text;
+            tags.appendChild(chip);
+          });
+
+          const registerLink = node.querySelector(".agenda-register");
+          if (item.registerLink) {
+            registerLink.href = item.registerLink;
+            registerLink.classList.remove("hidden");
+          }
+
+          const posterLink = node.querySelector(".agenda-poster");
+          if (item.poster) {
+            posterLink.href = item.poster;
+            posterLink.classList.remove("hidden");
+          }
+
+          const statusNode = node.querySelector(".agenda-status");
+          const loweredStatus = (item.status || "").toLowerCase();
+          if (loweredStatus.includes("ditutup") || loweredStatus.includes("batal")) {
+            statusNode.style.background = "rgba(220,38,38,0.12)";
+            statusNode.style.color = "#dc2626";
+          } else if (loweredStatus.includes("dibuka")) {
+            statusNode.style.background = "rgba(37,99,235,0.12)";
+            statusNode.style.color = "#2563eb";
+          }
+
+          fragment.appendChild(node);
+        });
+
+        elements.agendaList.innerHTML = "";
+        elements.agendaList.appendChild(fragment);
+        return;
+      }
+
       const holiday = getHolidayForDate(state.selectedDate);
       const selectedDateObj = parseISODate(state.selectedDate);
       const isSunday = selectedDateObj.getDay() === 0;
 
+      if (elements.detailEyebrow) elements.detailEyebrow.textContent = "Detail tanggal terpilih";
       elements.selectedDateTitle.textContent = formatLongDate(state.selectedDate);
       elements.selectedDateMeta.textContent = agendas.length
         ? `Menampilkan ${agendas.length} agenda untuk tanggal ini.`
@@ -1462,6 +1542,7 @@
       elements.agendaList.appendChild(fragment);
     }
 
+
     function alignSelectionToCurrentMonth() {
       const selected = parseISODate(state.selectedDate);
       const sameMonth = selected.getFullYear() === state.currentMonth.getFullYear() && selected.getMonth() === state.currentMonth.getMonth();
@@ -1490,8 +1571,8 @@
         ? state.allAgendas.filter(item => item.searchIndex.includes(keyword))
         : [...state.allAgendas];
 
-      elements.agendaCount.textContent = String(state.filteredAgendas.length);
-      syncSelectionAfterFilter();
+      if (elements.agendaCount) elements.agendaCount.textContent = String(state.filteredAgendas.length);
+      if (!keyword) syncSelectionAfterFilter();
       renderCalendar();
       renderDetails();
     }
@@ -1573,7 +1654,7 @@
         const agendas = await fetchSpreadsheetData();
         state.allAgendas = agendas;
         state.filteredAgendas = [...agendas];
-        elements.agendaCount.textContent = String(agendas.length);
+        if (elements.agendaCount) elements.agendaCount.textContent = String(agendas.length);
 
         const years = new Set([
           state.currentMonth.getFullYear(),
